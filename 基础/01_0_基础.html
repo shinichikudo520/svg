@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+	<style type="text/css">
+/* 		.c{
+			border: 1px dashed red;
+		} */
+	</style>
+</head>
+<body>
+    <div id="main">
+        <div>
+            <h3>引入svg文件</h3>
+            <!-- 引入svg文件 -->
+            <embed src="./01_1_test.svg" type="image/svg+xml" />
+            <object data="./01_1_test.svg" type="image/svg+xml"></object>
+            <iframe src="./01_1_test.svg" frameborder="0"></iframe>
+        </div>
+
+        <div>
+            <h3>直接写入svg代码</h3>
+            <div>
+                <h4>rect矩形</h4>
+                <!-- 直接写入svg代码 -->
+                <svg width='100%' height='300'>
+                    <rect width="300" height="100" 
+                    style="fill:rgb(0,0,255);stroke-width:1;stroke:red"/>
+                    <rect x='50' y='110' width='150' height='150' style="fill:blue;stroke:pink;stroke-width:5;fill-opacity:0.1;stroke-opacity:0.9;"/>
+                    <rect x='210' y='110' width='150' height='150' style="fill:blue;stroke:pink;stroke-width:5;opacity:0.5;"/>
+                    <rect x='420' y='110'  rx='20' ry='20' width='150' height='150' style="fill: red;stroke:black;stroke-width:5;opacity:0.5;"/>
+                </svg>
+            </div>
+            <div>
+                <h4>circle圆形</h4>
+                <svg width='100%' height='300'>
+                    <circle cx='100' cy='50' r='40' stroke='black' stroke-width='2' fill='red'/>
+                </svg>
+            </div>
+
+            <div>
+                <h4>ellipse椭圆</h4>
+                <svg width='100%' height='300'>
+                    <ellipse cx='300' cy='80' rx='100' ry='50' style="fill: yellow;stroke:purple;stroke-width:2;"/>
+                </svg>
+            </div>
+
+            <div>
+                <h4>line直线</h4>
+                <svg width='100%' height='300'>
+                    <line x1='10' y1='10' x2='50' y2='175' style="stroke:pink;stroke-width:10;"/>
+                </svg>
+            </div>
+
+            <div>
+                <h4>polygon多边形</h4>
+                <svg width='100%' height='300'>
+                    <polygon points="200 10, 250 190, 160 210" style="fill:lime;stroke:black;stroke-width:1;"/>
+                </svg>
+            </div>
+
+            <div>
+                <h4>polyline折线</h4>
+                <svg width='100%' height='300'>
+                    <polyline points='20,20 40,25 60,40 80,120 120,140 200,180' style="stroke:black;stroke-width:3;fill:pink;" />
+                </svg>
+            </div>
+
+            <div>
+                <h4>path路径</h4>
+				<!-- 直线命令 -->
+				<h5>path绘制直线</h5>
+                <svg width='100%' height='500'>
+                    <path d="M250 0 L175 200 L325 200 Z"
+                         fill="black" stroke="pink" stroke-width="5"  />
+                    
+                    <!-- 大写命令  代表绝对定位 -->
+                    <path d='M10 10 H90 V90 H10 Z' fill='yellow' />
+                    <circle cx="10" cy="10" r="2" fill='pink'/>
+                    <circle cx="90" cy="10" r="2" fill='green'/>
+                    <circle cx="90" cy="90" r="2" fill='gery'/>
+                    <circle cx="10" cy="90" r="2" fill='red'/>
+
+                    <!-- 小写命令   代表相对位置：它们的参数不是指定一个明确的坐标，而是表示相对于它前面的点需要移动多少距离 -->
+                    <path d='M10 100 h80 v80 h-80 Z' fill='yellow' />
+                    <circle cx='10' cy='100' r='2' fill='pink' />
+                    <circle cx='90' cy='100' r='2' fill='green' />
+                    <circle cx='90' cy='180' r='2' fill='gery' />
+                    <circle cx='10' cy='180' r='2' fill='red' />
+
+                </svg>
+				<h5>path绘制曲线：三次贝塞尔曲线</h5>
+				<!-- 曲线命令 -->
+				<svg width='100%' >
+					<!-- 三次贝塞尔曲线：控制点描述的是曲线起始点的斜率，曲线上各个点的斜率，是从起点斜率到终点斜率的渐变过程。 -->
+					<path d='M10 10 C40 50,60 50,90 10' stroke='black' fill='none' />
+					<circle id='A' cx='10' cy='10' r='5' fill='pink'/>
+					<circle id='B' cx='40' cy='50' r='5' fill='pink' />
+					<line x1='10' y1='10' x2='40' y2='50' stroke='red' stroke-width='2'  />
+					
+					<circle id='C' cx='60' cy='50' r='5' fill='pink' />
+					<circle id='D' cx='90' cy='10' r='5' fill='pink' />
+					<line x1='60' y1='50' x2='90' y2='10' stroke='red' stroke-width='2'  />
+				</svg>
+				<h5>path绘制曲线：简写三次贝赛尔曲线</h5>
+				<svg width='100%' '>  
+					<!-- 简写三次贝塞尔曲线，命令：S，S命令可以用来创建与前面一样的贝塞尔曲线，但是，
+					如果S命令跟在一个C或S命令后面，则它的第一个控制点会被假设成前一个命令曲线的第二个控制点的中心对称点。
+					如果S命令单独使用，前面没有C或S命令，那当前点将作为第一个控制点 -->
+					<!-- A  ---》  B  ---》  C ---》  D -->
+					<!-- 10 50  ---》  40 90  ---》  60 90 ---》  90 50 -->
+					<!-- D  ---》  E  ---》  F ---》  G -->
+					<!-- 90 50  ---》  120 10  ---》  140 10 ---》  170 50 -->
+					<path d='M10 50 C40 90,60 90,90 50 S140 10, 170 50' stroke='black' fill='none' />
+					
+					<!-- A-B -->
+					<circle id='A' cx='10' cy='50' r='5' fill='pink'/>
+					<circle id='B' cx='40' cy='90' r='5' fill='pink' />
+					<line x1='10' y1='50' x2='40' y2='90' stroke='red' stroke-width='2'  />
+					<!-- C-D -->
+					<circle id='C' cx='60' cy='90' r='5' fill='pink' />
+					<circle id='D' cx='90' cy='50' r='5' fill='pink' />
+					<line x1='60' y1='90' x2='90' y2='50' stroke='red' stroke-width='2'  />
+					
+					<!-- D-E -->
+					<circle id='E' cx='120' cy='10' r='5' fill='pink' />
+					<line x1='90' y1='50' x2='120' y2='10' stroke='blue' stroke-width='2' />
+					
+					<!-- F-G -->
+					<circle id='F' cx='140' cy='10' r='5' fill='pink' />
+					<circle id='G' cx='170' cy='50' r='5' fill='pink' />
+					<line x1='140' y1='10' x2='170' y2='50' stroke='blue' stroke-width='2'  />
+					
+				</svg>
+				<!-- 二次贝塞尔曲线 -->
+				<h5>path绘制曲线：二次贝赛尔曲线</h5>
+				<svg width='100%'>
+					<path d='M10 100 Q100 10,190 100' fill='none' stroke='black' stroke-width='2'/>
+					<!-- A-B -->
+					<circle id='A' cx='10' cy='100' r='5' fill='pink'/>
+					<circle id='B' cx='100' cy='10' r='5' fill='pink'/>
+					<line x1='10' y1='100' x2='100' y2='10' stroke='red' stroke-width='2'/>
+					
+					<!-- B-C -->
+					<circle id='C' cx='190' cy='100' r='5' fill='pink'/>
+					<line x1='100' y1='10' x2='190' y2='100' stroke='red' stroke-width='2'/>
+					
+				</svg>
+				<h5>path绘制曲线：简写二次贝赛尔曲线</h5>
+				<svg width='100%' height='500'>
+					<!-- 快捷命令T会通过前一个控制点，推断出一个新的控制点。
+					这意味着，在你的第一个控制点后面，可以只定义终点，就创建出一个相当复杂的曲线。
+					需要注意的是，T命令前面必须是一个Q命令，或者是另一个T命令，才能达到这种效果。
+					如果T单独使用，那么控制点就会被认为和终点是同一个点，所以画出来的将是一条直线。 -->
+					<!-- A ---》 B ---》 C ---》 自映射的控制点D ---》E -->
+					<!--10 100 ---》  100 10---》 190 100 ---》 280 190---》370 100 -->
+					<path d='M10 100 Q100 10,190 100 T370 100' fill='none' stroke='black' stroke-width='2'/>
+					<!-- A-B -->
+					<circle id='A' cx='10' cy='100' r='5' fill='pink'/>
+					<circle id='B' cx='100' cy='10' r='5' fill='pink'/>
+					<line x1='10' y1='100' x2='100' y2='10' stroke='red' stroke-width='2'/>
+					
+					<!-- B-C -->
+					<circle id='C' cx='190' cy='100' r='5' fill='pink'/>
+					<line x1='100' y1='10' x2='190' y2='100' stroke='red' stroke-width='2'/>
+					
+					<!-- C-D -->
+					<circle id='D' cx='280' cy='190' r='5' fill='pink' />
+					<line x1='190' y1='100' x2='280' y2='190' stroke='blue' stroke-width='2'  />
+					
+					<!-- D-E -->
+					<circle cx='370' cy='100' r='5' fill='pink'/>
+					<line x1='280' y1='190' x2='370' y2='100' stroke='blue' stroke-width='2'/>
+				</svg>
+				<h5>pyth绘制圆弧</h5>
+				<svg width='100%' height='500'>
+					<!-- 必须有M命令，否则不显示圆弧 -->
+					<path d='M50 315 A 30 50 0 0 1 162.55 162.45' stroke='black' fill='green' stroke-width='2' />
+					<circle cx='10' xy='315' r='2' fill='red' />
+				</svg>
+				
+            </div>
+			<div>
+				<svg width="160" height="140" xmlns="http://www.w3.org/2000/svg" version="1.1">
+				  <line x1="40" x2="120" y1="20" y2="20" stroke="black" stroke-width="20" stroke-linecap="butt"/>
+				  <line x1="40" x2="120" y1="60" y2="60" stroke="black" stroke-width="20" stroke-linecap="square"/>
+				  <line x1="40" x2="120" y1="100" y2="100" stroke="black" stroke-width="20" stroke-linecap="round"/>
+				</svg>
+			</div>
+			<div>
+				<svg width="160" height="280" xmlns="http://www.w3.org/2000/svg" version="1.1">
+				  <polyline points="40 60 80 20 120 60" stroke="black" stroke-width="20"
+				      stroke-linecap="butt" fill="none" stroke-linejoin="miter"/>
+				  
+				  <polyline points="40 140 80 100 120 140" stroke="black" stroke-width="20"
+				      stroke-linecap="round" fill="none" stroke-linejoin="round"/>
+				  
+				  <polyline points="40 220 80 180 120 220" stroke="black" stroke-width="20"
+				      stroke-linecap="square" fill="none" stroke-linejoin="bevel"/>
+				</svg>
+			</div>
+			<div>
+				<h4>stroke-dasharray虚线描边</h4>
+				<svg width='100%' height='300'>
+					<!-- stroke-dasharray属性的参数，是一组用逗号分割的数字组成的数列。注意，和path不一样，这里的数字必须用逗号分割（空格会被忽略） -->
+					<!-- 每一组数字，第一个用来表示填色区域的长度，第二个用来表示非填色区域的长度。 -->
+					<path d='M 10 100 Q 100 10,190 100 T 370 100' stroke='black' stroke-width='2' fill='none' stroke-dasharray='5,15,5' />
+					<!-- 例子指定了3个数字，这种情况下，数字会循环两次，形成一个偶数的虚线模式（奇数个循环两次变偶数个）。所以该路径首先渲染5个填色单位，10个空白单位，5个填色单位，然后回头以这3个数字做一次循环，但是这次是创建5个空白单位，10个填色单位，5个空白单位。通过这两次循环得到偶数模式，并将这个偶数模式不断重复。 -->
+				
+					<line x1='10' y1='100' x2='370' y2='100' stroke='red' stroke-width='2' stroke-dasharray='5,5' />
+				
+				</svg>
+			</div>
+			<div>
+				<h4>style设置样式</h4>
+				<!-- 标签内样式 -->
+				<svg>
+					<rect x='10' y='10' width='180' height='100' style='fill:red;stroke:black;' />
+				</svg>
+				<svg>
+					<!-- defs设置样式 -->
+					<defs>
+						<style>
+							#myrect{
+								fill:red;
+								stroke:black;
+							}
+						</style>
+					</defs>
+					<rect id='myrect' x='10' y='10' width='180' height='100' />
+				</svg>
+			</div>
+			<div>
+				<h4>linearGradient线性渐变</h4>
+				<svg>
+					<defs>
+						<!-- 水平方向的线性渐变 -->
+						<linearGradient id='lineargradient1'>
+							<stop offset='0%' stop-color='red' stop-opacity='.5' />
+							<stop offset='50%' stop-color='blue' stop-opacity='.8' />
+							<stop offset='100%' stop-color='pink' stop-opacity='1' />
+						</linearGradient>
+						<!-- 垂直方向的线性渐变 -->
+						<linearGradient id='lineargradient2' x1='0' y1='0' x2='0.5' y2='1'>
+							<stop offset='0%' stop-color='red' stop-opacity='.5' />
+							<stop offset='50%' stop-color='blue' stop-opacity='.8' />
+							<stop offset='100%' stop-color='pink' stop-opacity='1' />
+						</linearGradient>
+						<style>
+							#rect2{
+								fill:url('#lineargradient2');
+							}
+						</style>
+					</defs>
+					<rect x='10' y='10' width='100' height='100' fill='url(#lineargradient1)' stroke-width='5' stroke='url(#lineargradient2)' />
+					<rect id='rect2' x='120' y='10' width='100' height='100'  />
+				</svg>
+				<h4>radialGradient径向渐变</h4>
+				<svg width='100%' height='300'>
+					<defs>
+						<!-- cx cy r的值都为0-1之间的小数，定义径向渐变圆心的坐标及半径，决定渐变的边缘位置 -->
+						<radialGradient id='radialGradient1' cx='0.3' cy='0.3' r='0.5' >
+							<stop offset='0%' stop-color='red' stop-opacity='1' />
+							<stop offset='100%' stop-color='blue' stop-opacity='1' />
+						</radialGradient>
+						<!-- fx fy的值也为0-1之间的小数，定义渐变的焦点，决定渐变的中心 -->
+						<radialGradient id='radialGradient2' cx='0.3' cy='0.3' r='0.5' fx='.1' fy='.1'>
+							<stop offset='0%' stop-color='red' stop-opacity='1' />
+							<stop offset='100%' stop-color='blue' stop-opacity='1' />
+						</radialGradient>
+						<radialGradient id='radialGradient3' cx='0.3' cy='0.3' r='0.5' spreadMethod='pad'>
+							<stop offset='0%' stop-color='red' stop-opacity='1' />
+							<stop offset='100%' stop-color='blue' stop-opacity='1' />
+						</radialGradient>
+						<radialGradient id='radialGradient4' cx='0.3' cy='0.3' r='0.5' spreadMethod='repeat'>
+							<stop offset='0%' stop-color='red' stop-opacity='1' />
+							<stop offset='100%' stop-color='blue' stop-opacity='1' />
+						</radialGradient>
+						<radialGradient id='radialGradient5' cx='0.3' cy='0.3' r='0.5' spreadMethod='reflect'>
+							<stop offset='0%' stop-color='red' stop-opacity='1' />
+							<stop offset='100%' stop-color='blue' stop-opacity='1' />
+						</radialGradient>
+					</defs>
+					<rect x='0' y='0' height='90' width='190' fill='url(#radialGradient1)' />
+					<rect x='210' y='0' height='90' width='190' fill='url(#radialGradient2)' />
+					<rect x='0' y='100' height='90' width='190' fill='url(#radialGradient3)' />
+					<rect x='210' y='100' height='90' width='190' fill='url(#radialGradient4)' />
+					<rect x='410' y='100' height='90' width='190' fill='url(#radialGradient5)' />
+				</svg>
+			</div>
+			<div>
+				<h4>pattern图案</h4>
+				<svg>
+					<defs>
+						<linearGradient id='linearGradient1'>
+							<stop offset='5%' stop-color='white' stop-opacity='1' />
+							<stop offset='95%' stop-color='blue' stop-opacity='1' />
+						</linearGradient>
+						<linearGradient id='linearGradient2'>
+							<stop offset='5%' stop-color='red' stop-opacity='1' />
+							<stop offset='95%' stop-color='orange' stop-opacity='1' />
+						</linearGradient>
+						<pattern id='myPattern' x='0' y='0' width='0.25' height='0.25'>
+							<rect x='0' y='0' width='50' height='50' fill='skyblue' />
+							<rect x='0' y='0' width='25' height='25' fill='url(#linearGradient2)' />
+							<circle cx='25' cy='25' r='20' fill='url(#linearGradient1)' fill-opacity='0.5' />
+ 						</pattern>
+					</defs>
+					<rect x='0' y='0' width='200' height='200' fill='url(#myPattern)' />
+				</svg>
+			</div>
+            <div>
+                <h4>text文本</h4>
+                <svg width='100%' height='800'>
+                    <text x="100"  y="100" fill='red'>svg-text...</text>
+                    <text x="100"  y="150" fill='red' transform='rotate(90 125,150)'>svg-text2...</text>
+                </svg>
+            </div>
+
+        </div>
+
+
+    </div>
+</body>
+</html>
