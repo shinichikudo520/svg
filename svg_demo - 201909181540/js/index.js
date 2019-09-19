@@ -1,3 +1,16 @@
+//svgDom元素
+var svg = document.getElementById('svg_contain');
+
+//获取坐标所需常数
+//获取x,y坐标:相对于文档
+var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+//获取svg距离顶部的距离
+var svgT = document.getElementsByClassName('content')[0].offsetTop;
+console.log('svgT',svgT);
+//获取svg距离左侧的距离
+var svgL = document.getElementsByClassName('content')[0].offsetLeft;
+
 function clickBtn(clickChoose){
 	console.log(clickChoose);
 	//加载不同的js
@@ -15,14 +28,6 @@ function clickBtn(clickChoose){
 	
 	//解绑svg的事件
 	var svg = document.getElementById('svg_contain'); 
-	// cloneSvg = svg.cloneNode(true);	
-	// // var childs = cloneSvg.childNodes; 
-	// // for(var i = childs .length - 1; i >= 0; i--) {
-	// //   cloneSvg.removeChild(childs[i]);
-	// // }
-	// var content = document.getElementsByClassName('content')[0];
-	// content.replaceChild(cloneSvg,content.children[0]);
-	// 
 	svg.onmousemove = null;
 	svg.onmouseup = null;
 	svg.removeEventListener('mousedown',window.svgDown,false);

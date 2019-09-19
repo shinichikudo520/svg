@@ -9,8 +9,10 @@ var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
 var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
 //获取svg距离顶部的距离
 var svgT = document.getElementsByClassName('content')[0].offsetTop;
+console.log('svgT',svgT);
 //获取svg距离左侧的距离
 var svgL = document.getElementsByClassName('content')[0].offsetLeft;
+
 //svg是否第一次点击
 var clickOddOrEven = true;
 //矩形
@@ -25,8 +27,10 @@ var coordinatesMove;
 var isMove = false;
 //获取坐标
 function getCoordinates(e){	
-	var x =( e.pageX || e.clientX + scrollX) - svgL;
-	var y = (e.pageY || e.clienty + scrollY) - svgT;
+	// debugger
+	var x = e.clientX + scrollX - svgL;
+	var y = e.clientY + scrollY - svgT;
+	console.log(x,y)
 	return {
 		x,
 		y
@@ -88,9 +92,10 @@ var svgDown = function(e){
 }
 //svg移动事件
 var svgMove = function(e){
-	//获取坐标对象
-	coordinatesObj2 = getCoordinates(e);
+	
 	if(coordinatesObj1 != undefined){
+		//获取坐标对象
+		coordinatesObj2 = getCoordinates(e);
 		console.log(coordinatesObj1,coordinatesObj2);
 		var x1 = coordinatesObj1.x;
 		var y1 = coordinatesObj1.y;
