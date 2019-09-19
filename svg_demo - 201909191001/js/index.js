@@ -63,6 +63,10 @@ window.onload = function(){
 		}
 		
 	}
+
+
+
+	//svg
 	//创建svg元素
 	function createSvgEl(type,props){
 		var type = document.createElementNS('http://www.w3.org/2000/svg',type);
@@ -70,56 +74,6 @@ window.onload = function(){
 			type.setAttribute(key,props[key]);
 		}
 		return type
-	}
-	//创建rect元素
-	function createRect(coordinatesObj1){
-		var props = {
-			'x':coordinatesObj1.x,
-			'y':coordinatesObj1.y,
-			'width':0,
-			'height':0,
-			'fill':'red',
-			'stroke':'black'
-		}
-		return createSvgEl('rect',props);
-	}
-	//创建ellipse元素
-	function createEllipse(coordinatesObj1){
-		var props = {
-			'cx':coordinatesObj1.x,
-			'cy':coordinatesObj1.y,
-			'rx':0,
-			'ry':0,
-			'fill':'red',
-			'stroke':'black'
-		}
-		return createSvgEl('ellipse',props);
-	}
-	//ellipse元素：将点坐标添加到坐标集points中
-	function addPoint(svgObj,coordinates){
-		svgObj.points += (coordinates.x + ' ' + coordinates.y + ' ');
-	}
-	//创建polygon元素
-	function createPolygon(svgObj,coordinates){
-		//将点添加到坐标集中
-		addPoint(svgObj,coordinates);
-		var props = {
-			'points':svgObj.points,
-			'fill':'red',
-			'stroke':'black'
-		}
-		return createSvgEl('polygon',props);
-	}
-	//创建svgPath元素
-	function createSvgPath(svgObj,x,y){
-		svgObj.M = 'M'+ x + ' ' + y;
-		svgObj.d = svgObj.M;
-		var props = {
-			'd':svgObj.d,
-			'fill':'none',
-			'stroke':'red'
-		}
-		return createSvgEl('path',props);
 	}
 	//svgDown事件
 	function svgDown(e,svgObj,type){
@@ -154,6 +108,37 @@ window.onload = function(){
 				bezierMove(e,svgObj);
 				break;
 		}	
+	}
+
+	//rect
+	//绘制矩形
+	function drawRect(){
+		var rectEl = {
+			//是否单次点击
+			clickOddOrEven:true,
+			//判断是否移动
+			isMove:false
+		}
+		//svg点击
+		svg.addEventListener('mousedown',svgMouseDown = function(e){
+			svgDown(e,rectEl,'rect');
+		})
+		//svg移动
+		svg.addEventListener('mousemove',svgMouseMove = function(e){
+			svgMove(e,rectEl,'rect')
+		});
+	}
+	//创建rect元素
+	function createRect(coordinatesObj1){
+		var props = {
+			'x':coordinatesObj1.x,
+			'y':coordinatesObj1.y,
+			'width':0,
+			'height':0,
+			'fill':'red',
+			'stroke':'black'
+		}
+		return createSvgEl('rect',props);
 	}
 	//绘制rect时svgDown事件
 	function rectDown(e,svgObj){
@@ -193,6 +178,7 @@ window.onload = function(){
 			svgObj.clickOddOrEven = true;
 		}
 	}
+
 	//绘制rect时svgMove事件
 	function rectMove(e,svgObj){
 		//获取坐标对象
@@ -226,6 +212,47 @@ window.onload = function(){
 			svgObj.newrect.setAttribute('height',Math.abs(height));
 		}
 	}
+	
+
+
+
+
+	//ellipse
+	//绘制圆形
+	function drawEllipse(){
+		var ellipseEl = {
+			//是否单次点击
+			clickOddOrEven:true,
+			//判断是否移动
+			isMove:false
+		}
+		//svg点击
+		svg.addEventListener('mousedown',svgMouseDown = function(e){
+			svgDown(e,ellipseEl,'ellipse');
+		})
+		//svg移动
+		svg.addEventListener('mousemove',svgMouseMove = function(e){
+			svgMove(e,ellipseEl,'ellipse')
+		});
+		
+	}
+	//ellipse元素：将点坐标添加到坐标集points中
+	function addPoint(svgObj,coordinates){
+		svgObj.points += (coordinates.x + ' ' + coordinates.y + ' ');
+	}
+	//创建ellipse元素
+	function createEllipse(coordinatesObj1){
+		var props = {
+			'cx':coordinatesObj1.x,
+			'cy':coordinatesObj1.y,
+			'rx':0,
+			'ry':0,
+			'fill':'red',
+			'stroke':'black'
+		}
+		return createSvgEl('ellipse',props);
+	}
+	
 	//绘制ellipse时的svgDown事件
 	function ellipseDown(e,svgObj){
 		//单次点击
@@ -277,6 +304,27 @@ window.onload = function(){
 			svgObj.newEllipse.setAttribute('rx',rx);
 			svgObj.newEllipse.setAttribute('ry',ry);
 		}
+	}
+	
+
+
+
+
+
+
+
+
+	//polygon
+	//创建polygon元素
+	function createPolygon(svgObj,coordinates){
+		//将点添加到坐标集中
+		addPoint(svgObj,coordinates);
+		var props = {
+			'points':svgObj.points,
+			'fill':'red',
+			'stroke':'black'
+		}
+		return createSvgEl('polygon',props);
 	}
 	//绘制polygon时的svgDown事件
 	function polygonDown(e,svgObj){
@@ -357,6 +405,44 @@ window.onload = function(){
 			
 			svgObj.newPolygon.setAttribute('points',pointsTemp);
 		}
+	}
+	//绘制多边形
+	function drawPolygon(){
+		var polygonEl = {
+			//svg是否第一次点击
+			clickFirst:true,
+			//坐标集
+			points:'',
+			//判断是否移动
+			isMove:false,
+			
+		};
+		//svg点击
+		svg.addEventListener('mousedown',svgMouseDown = function(e){
+			svgDown(e,polygonEl,'polygon');
+		})
+		//svg移动
+		svg.addEventListener('mousemove',svgMouseMove = function(e){
+			svgMove(e,polygonEl,'polygon');
+		});
+	}
+
+
+
+
+
+
+	//path
+	//创建svgPath元素
+	function createSvgPath(svgObj,x,y){
+		svgObj.M = 'M'+ x + ' ' + y;
+		svgObj.d = svgObj.M;
+		var props = {
+			'd':svgObj.d,
+			'fill':'none',
+			'stroke':'red'
+		}
+		return createSvgEl('path',props);
 	}
 	//绘制bezier时的svgDown事件
 	function bezierDown(e,svgObj){
@@ -469,61 +555,6 @@ window.onload = function(){
 			}
 			svgObj.newpath.setAttribute('d',tempD);
 		}
-	}
-	//绘制矩形
-	function drawRect(){
-		var rectEl = {
-			//是否单次点击
-			clickOddOrEven:true,
-			//判断是否移动
-			isMove:false
-		}
-		//svg点击
-		svg.addEventListener('mousedown',svgMouseDown = function(e){
-			svgDown(e,rectEl,'rect');
-		})
-		//svg移动
-		svg.addEventListener('mousemove',svgMouseMove = function(e){
-			svgMove(e,rectEl,'rect')
-		});
-	}
-	//绘制圆形
-	function drawEllipse(){
-		var ellipseEl = {
-			//是否单次点击
-			clickOddOrEven:true,
-			//判断是否移动
-			isMove:false
-		}
-		//svg点击
-		svg.addEventListener('mousedown',svgMouseDown = function(e){
-			svgDown(e,ellipseEl,'ellipse');
-		})
-		//svg移动
-		svg.addEventListener('mousemove',svgMouseMove = function(e){
-			svgMove(e,ellipseEl,'ellipse')
-		});
-		
-	}
-	//绘制多边形
-	function drawPolygon(){
-		var polygonEl = {
-			//svg是否第一次点击
-			clickFirst:true,
-			//坐标集
-			points:'',
-			//判断是否移动
-			isMove:false,
-			
-		};
-		//svg点击
-		svg.addEventListener('mousedown',svgMouseDown = function(e){
-			svgDown(e,polygonEl,'polygon');
-		})
-		//svg移动
-		svg.addEventListener('mousemove',svgMouseMove = function(e){
-			svgMove(e,polygonEl,'polygon');
-		});
 	}
 	//清空曲线所有命令及上一条曲线的坐标
 	function clearCommand(svgObj){
