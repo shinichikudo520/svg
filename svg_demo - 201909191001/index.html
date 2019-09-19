@@ -4,29 +4,22 @@
 		<meta charset="utf-8">
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="./css/index.css"/>
-		<script src="./js/index.js" type="text/javascript" charset="utf-8" defer></script>
 	</head>
 	<body>
 		<div id="main" class="bgcolor">
 			<div class="nav">
 				<nav>
 					<ul>
-						<li class="bgcolor rect" onclick="clickBtn('rect')">
+						<li class="bgcolor rect" >
 							<a href="#">矩形</a>
 						</li>
-						<li class="bgcolor circle" onclick="clickBtn('ellipse')">
+						<li class="bgcolor ellipse" >
 							<a href="#">圆形</a>
 						</li>
-						<li class="bgcolor polygon" onclick="clickBtn('polygon')">
+						<li class="bgcolor polygon" >
 							<a href="#">多边形</a>
 						</li>
-						<!-- <li class="bgcolor secondBessel" onclick="clickBtn('secondBessel')">
-							<a href="#">二阶贝塞尔</a>
-						</li>
-						<li class="bgcolor thirdBessel" onclick="clickBtn('thirdBessel')">
-							<a href="#">三阶贝塞尔</a>
-						</li> -->
-						<li class="bgcolor thirdBessel" onclick="clickBtn('bessel')">
+						<li class="bgcolor bezier" >
 							<a href="#">贝塞尔曲线</a>
 						</li>
 					</ul>
@@ -36,6 +29,6 @@
 				<svg id="svg_contain" version="1.1" baseProfile="full" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"></svg>
 			</div>
 		</div>
-
+	<script src="./js/index.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>
