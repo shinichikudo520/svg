@@ -33,6 +33,9 @@ window.onload = function(){
 				clickBtn(item);
 			}
 		})
+		// document.getElementsByClassName('svgGraphicElUl')[0].onclick = function(){
+		// 	clickBtn(item);
+		// }
 	}	
 	//选择绘制图形的种类
 	function clickBtn(clickChoose){
@@ -78,8 +81,7 @@ window.onload = function(){
 			'fill':'red',
 			'stroke':'black'
 		}
-		var rect = createSvgEl('rect',props);
-		return rect
+		return createSvgEl('rect',props);
 	}
 	//创建ellipse元素
 	function createEllipse(coordinatesObj1){
@@ -91,118 +93,115 @@ window.onload = function(){
 			'fill':'red',
 			'stroke':'black'
 		}
-		var ellipse = createSvgEl('ellipse',props);
-		return ellipse
+		return createSvgEl('ellipse',props);
 	}
 	//ellipse元素：将点坐标添加到坐标集points中
-	function addPoint(svgEl,coordinates){
-		svgEl.points += (coordinates.x + ' ' + coordinates.y + ' ');
+	function addPoint(svgObj,coordinates){
+		svgObj.points += (coordinates.x + ' ' + coordinates.y + ' ');
 	}
 	//创建polygon元素
-	function createPolygon(svgEl,coordinates){
+	function createPolygon(svgObj,coordinates){
 		//将点添加到坐标集中
-		addPoint(svgEl,coordinates);
+		addPoint(svgObj,coordinates);
 		var props = {
-			'points':svgEl.points,
+			'points':svgObj.points,
 			'fill':'red',
 			'stroke':'black'
 		}
-		var polygon = createSvgEl('polygon',props);
-		return polygon
+		return createSvgEl('polygon',props);
 	}
 	//创建svgPath元素
-	function createSvgPath(svgEl,x,y){
-		svgEl.M = 'M'+ x + ' ' + y;
-		svgEl.d = svgEl.M;
+	function createSvgPath(svgObj,x,y){
+		svgObj.M = 'M'+ x + ' ' + y;
+		svgObj.d = svgObj.M;
 		var props = {
-			'd':svgEl.d,
+			'd':svgObj.d,
 			'fill':'none',
 			'stroke':'red'
 		}
-		var path = createSvgEl('path',props);
-		return path
+		return createSvgEl('path',props);
 	}
 	//svgDown事件
-	function svgDown(e,svgEl,type){
+	function svgDown(e,svgObj,type){
 		switch(type){
 			case 'rect':
-				rectDown(e,svgEl);
+				rectDown(e,svgObj);
 				break;
 			case 'ellipse':
-				ellipseDown(e,svgEl);
+				ellipseDown(e,svgObj);
 				break;
 			case 'polygon':
-				polygonDown(e,svgEl);
+				polygonDown(e,svgObj);
 				break;
 			case 'bezier':
-				bezierDown(e,svgEl);
+				bezierDown(e,svgObj);
 				break;
 		}	
 	}
 	//svg移动事件
-	function svgMove(e,svgEl,type){
+	function svgMove(e,svgObj,type){
 		switch(type){
 			case 'rect':
-				rectMove(e,svgEl);
+				rectMove(e,svgObj);
 				break;
 			case 'ellipse':
-				ellipseMove(e,svgEl);
+				ellipseMove(e,svgObj);
 				break;
 			case 'polygon':
-				polygonMove(e,svgEl);
+				polygonMove(e,svgObj);
 				break;
 			case 'bezier':
-				bezierMove(e,svgEl);
+				bezierMove(e,svgObj);
 				break;
 		}	
 	}
 	//绘制rect时svgDown事件
-	function rectDown(e,svgEl){
+	function rectDown(e,svgObj){
 		//单次点击
-		if(svgEl.clickOddOrEven){
+		if(svgObj.clickOddOrEven){
 			//获取坐标对象
-			svgEl.coordinatesObj1 = getCoordinates(e);	
-			var rect = createRect(svgEl.coordinatesObj1);
+			svgObj.coordinatesObj1 = getCoordinates(e);	
+			var rect = createRect(svgObj.coordinatesObj1);
 			rect.onmousedown = function(e){
-				svgEl.isMove = true;
+				svgObj.isMove = true;
 				var moveBefore = getCoordinates(e);
 				var moveBeforeX = rect.getAttribute('x');
 				var moveBeforeY = rect.getAttribute('y');
 				svg.onmousemove = function(e){
-					svgEl.coordinatesMove = getCoordinates(e);
-					var moveX = Number(moveBeforeX) + Number(svgEl.coordinatesMove.x - moveBefore.x);
-					var moveY = Number(moveBeforeY) + Number(svgEl.coordinatesMove.y - moveBefore.y);
+					svgObj.coordinatesMove = getCoordinates(e);
+					var moveX = Number(moveBeforeX) + Number(svgObj.coordinatesMove.x - moveBefore.x);
+					var moveY = Number(moveBeforeY) + Number(svgObj.coordinatesMove.y - moveBefore.y);
 					rect.setAttribute('x',moveX);
 					rect.setAttribute('y',moveY);
 				}		
 				svg.onmouseup = function(e){
 						svg.onmousemove = null;
-						svgEl.isMove = false;
+						svgObj.isMove = false;
 				}
-				if(svgEl.clickOddOrEven){
+				if(svgObj.clickOddOrEven){
 					//阻止冒泡
 					e.stopPropagation();
 				}
 			}
-			if(!svgEl.isMove){
+			if(!svgObj.isMove){
 				svg.appendChild(rect);
-				svgEl.newrect = rect;
+				svgObj.newrect = rect;
 			}
-			svgEl.clickOddOrEven = false;
+			svgObj.clickOddOrEven = false;
 		}else{
-			svgEl.coordinatesObj1 = undefined;
-			svgEl.clickOddOrEven = true;
+			svgObj.coordinatesObj1 = undefined;
+			svgObj.clickOddOrEven = true;
 		}
 	}
 	//绘制rect时svgMove事件
-	function rectMove(e,svgEl){
+	function rectMove(e,svgObj){
 		//获取坐标对象
-		svgEl.coordinatesObj2 = getCoordinates(e);
-		if(svgEl.coordinatesObj1 != undefined){
-			var x1 = svgEl.coordinatesObj1.x;
-			var y1 = svgEl.coordinatesObj1.y;
-			var x2 = svgEl.coordinatesObj2.x;
-			var y2 = svgEl.coordinatesObj2.y;
+		svgObj.coordinatesObj2 = getCoordinates(e);
+		if(svgObj.coordinatesObj1 != undefined){
+			var x1 = svgObj.coordinatesObj1.x;
+			var y1 = svgObj.coordinatesObj1.y;
+			var x2 = svgObj.coordinatesObj2.x;
+			var y2 = svgObj.coordinatesObj2.y;
 			var width = x2 - x1;
 			var height =y2 - y1;
 			//moveTo参数水平偏移量x
@@ -221,77 +220,77 @@ window.onload = function(){
 				y = y2;
 				height = Math.abs(height);
 			}
-			svgEl.newrect.setAttribute('x',x);
-			svgEl.newrect.setAttribute('width',width);
-			svgEl.newrect.setAttribute('y',y);
-			svgEl.newrect.setAttribute('height',Math.abs(height));
+			svgObj.newrect.setAttribute('x',x);
+			svgObj.newrect.setAttribute('width',width);
+			svgObj.newrect.setAttribute('y',y);
+			svgObj.newrect.setAttribute('height',Math.abs(height));
 		}
 	}
 	//绘制ellipse时的svgDown事件
-	function ellipseDown(e,svgEl){
+	function ellipseDown(e,svgObj){
 		//单次点击
-		if(svgEl.clickOddOrEven){
+		if(svgObj.clickOddOrEven){
 			//获取坐标对象
-			svgEl.coordinatesObj1 = getCoordinates(e);	
-			var ellipse = createEllipse(svgEl.coordinatesObj1);
+			svgObj.coordinatesObj1 = getCoordinates(e);	
+			var ellipse = createEllipse(svgObj.coordinatesObj1);
 			ellipse.onmousedown = function(e){
-				svgEl.isMove = true;
+				svgObj.isMove = true;
 				svg.onmousemove = function(e){
-					svgEl.coordinatesMove = getCoordinates(e);
-					ellipse.setAttribute('cx',svgEl.coordinatesMove.x);
-					ellipse.setAttribute('cy',svgEl.coordinatesMove.y);
+					svgObj.coordinatesMove = getCoordinates(e);
+					ellipse.setAttribute('cx',svgObj.coordinatesMove.x);
+					ellipse.setAttribute('cy',svgObj.coordinatesMove.y);
 				}		
 				svg.onmouseup = function(e){
 						svg.onmousemove = null;
-						svgEl.isMove = false;
+						svgObj.isMove = false;
 				}
-				if(svgEl.clickOddOrEven){
+				if(svgObj.clickOddOrEven){
 					//阻止冒泡
 					e.stopPropagation();
 				}
 			}
-			if(!svgEl.isMove){
+			if(!svgObj.isMove){
 				svg.appendChild(ellipse);
-				svgEl.newEllipse = ellipse;
+				svgObj.newEllipse = ellipse;
 			}
-			svgEl.clickOddOrEven = false;
+			svgObj.clickOddOrEven = false;
 		}else{
-			svgEl.coordinatesObj1 = undefined;
-			svgEl.clickOddOrEven = true;
+			svgObj.coordinatesObj1 = undefined;
+			svgObj.clickOddOrEven = true;
 		}
 	}
 	//绘制ellipse时svgMove事件
-	function ellipseMove(e,svgEl){
+	function ellipseMove(e,svgObj){
 		//获取坐标对象
-		svgEl.coordinatesObj2 = getCoordinates(e);
-		if(svgEl.coordinatesObj1 != undefined){
-			var x1 = svgEl.coordinatesObj1.x;
-			var y1 = svgEl.coordinatesObj1.y;
-			var x2 = svgEl.coordinatesObj2.x;
-			var y2 = svgEl.coordinatesObj2.y;
+		svgObj.coordinatesObj2 = getCoordinates(e);
+		if(svgObj.coordinatesObj1 != undefined){
+			var x1 = svgObj.coordinatesObj1.x;
+			var y1 = svgObj.coordinatesObj1.y;
+			var x2 = svgObj.coordinatesObj2.x;
+			var y2 = svgObj.coordinatesObj2.y;
 			var cx = x2 > x1 ? (x2 - x1)/2 + x1 : (x1 - x2)/2 + x2;
 			var cy = y2 > y1 ? (y2 - y1)/2 + y1 : (y1 - y2)/2 + y2;
 			var rx = Math.abs(x2 - x1) / 2;
 			var ry = Math.abs(y2 - y1) / 2;
-			svgEl.newEllipse.setAttribute('cx',cx);
-			svgEl.newEllipse.setAttribute('cy',cy);
-			svgEl.newEllipse.setAttribute('rx',rx);
-			svgEl.newEllipse.setAttribute('ry',ry);
+			svgObj.newEllipse.setAttribute('cx',cx);
+			svgObj.newEllipse.setAttribute('cy',cy);
+			svgObj.newEllipse.setAttribute('rx',rx);
+			svgObj.newEllipse.setAttribute('ry',ry);
 		}
 	}
 	//绘制polygon时的svgDown事件
-	function polygonDown(e,svgEl){
+	function polygonDown(e,svgObj){
 		//获取坐标
 		var coordinates = getCoordinates(e);
 			
 		if(e.which == 3){
-			if(!svgEl.clickFirst){
+			if(!svgObj.clickFirst){
 				//将点添加到坐标集中
-				addPoint(svgEl,coordinates);
-				svgEl.newPolygon.setAttribute('points',svgEl.points);
+				addPoint(svgObj,coordinates);
+				svgObj.newPolygon.setAttribute('points',svgObj.points);
 				
-				svgEl.clickFirst = true;
-				svgEl.points = '';
+				svgObj.clickFirst = true;
+				svgObj.points = '';
 				//阻止右键菜单弹出
 				document.oncontextmenu = function(){return false};
 			}
@@ -299,17 +298,17 @@ window.onload = function(){
 		}
 		//左键点击
 		//第一次点击
-		if(svgEl.clickFirst){	
-			var polygon = createPolygon(svgEl,coordinates);
+		if(svgObj.clickFirst){	
+			var polygon = createPolygon(svgObj,coordinates);
 			polygon.onmousedown = function(e){
 				var polygonPoints = polygon.getAttribute('points');
-				svgEl.isMove = true;
+				svgObj.isMove = true;
 				var pointsArr = polygonPoints.split(" ");
 				var moveBefore = getCoordinates(e);
 				svg.onmousemove = function(e){
-					svgEl.coordinatesMove = getCoordinates(e);
-					var moveX = Number(svgEl.coordinatesMove.x - moveBefore.x);
-					var moveY = Number(svgEl.coordinatesMove.y - moveBefore.y);
+					svgObj.coordinatesMove = getCoordinates(e);
+					var moveX = Number(svgObj.coordinatesMove.x - moveBefore.x);
+					var moveY = Number(svgObj.coordinatesMove.y - moveBefore.y);
 					var tempArr = [];
 					for(var i = 0;i < pointsArr.length;i++){
 						var pointNum = parseFloat(pointsArr[i]);
@@ -328,147 +327,147 @@ window.onload = function(){
 				}		
 				svg.onmouseup = function(e){
 						svg.onmousemove = null;
-						svgEl.isMove = false;
+						svgObj.isMove = false;
 				}
-				if(svgEl.clickFirst){
+				if(svgObj.clickFirst){
 					//阻止冒泡
 					e.stopPropagation();
 				}
 			}
-			if(!svgEl.isMove){
+			if(!svgObj.isMove){
 				svg.appendChild(polygon);
-				svgEl.newPolygon = polygon;
+				svgObj.newPolygon = polygon;
 			}
-			svgEl.clickFirst = false;
+			svgObj.clickFirst = false;
 		}
 		//不是第一次点击
 		else{
 			//将点添加到坐标集中
-			addPoint(svgEl,coordinates);
-			svgEl.newPolygon.setAttribute('points',svgEl.points);
+			addPoint(svgObj,coordinates);
+			svgObj.newPolygon.setAttribute('points',svgObj.points);
 		}
 	}
 	//绘制ellipse时svgMove事件
-	function polygonMove(e,svgEl){
-		if(!svgEl.clickFirst){
+	function polygonMove(e,svgObj){
+		if(!svgObj.clickFirst){
 			//获取移动时坐标对象
-			svgEl.coordinatesMove = getCoordinates(e);
+			svgObj.coordinatesMove = getCoordinates(e);
 			//临时坐标集
-			var pointsTemp = svgEl.points + (svgEl.coordinatesMove.x + ' ' + svgEl.coordinatesMove.y + ' ');
+			var pointsTemp = svgObj.points + (svgObj.coordinatesMove.x + ' ' + svgObj.coordinatesMove.y + ' ');
 			
-			svgEl.newPolygon.setAttribute('points',pointsTemp);
+			svgObj.newPolygon.setAttribute('points',pointsTemp);
 		}
 	}
 	//绘制bezier时的svgDown事件
-	function bezierDown(e,svgEl){
+	function bezierDown(e,svgObj){
 		//获取坐标
 		var coordinates = getCoordinates(e);
 		var x = coordinates.x;
 		var y = coordinates.y;
 		//右键点击
 		if(e.which == 3){
-			if(svgEl.clickFirst > 1){
-				switch(svgEl.clickFirst){
+			if(svgObj.clickFirst > 1){
+				switch(svgObj.clickFirst){
 					case 2:
 					case 3:
-						svgEl.d= svgEl.M + svgEl.Q;
+						svgObj.d= svgObj.M + svgObj.Q;
 						break;
 					case 4:
 						//防止第四次点击和第三次点击是双击行为
 						//即第四点的坐标与第三点一致，看做同一点，不构成三次贝塞尔曲线
-						if(svgEl.C != undefined && svgEl.C != '' ){
-							svgEl.d= svgEl.M + svgEl.C;
+						if(svgObj.C != undefined && svgObj.C != '' ){
+							svgObj.d= svgObj.M + svgObj.C;
 						}else{
-							svgEl.d= svgEl.M + svgEl.Q;
+							svgObj.d= svgObj.M + svgObj.Q;
 						}
 						break;
 				}
-				svgEl.newpath.setAttribute('d',svgEl.d);				
+				svgObj.newpath.setAttribute('d',svgObj.d);				
 				//清空初始量和命令集合
-				svgEl.clickFirst = 1;
-				clearCommand(svgEl);
+				svgObj.clickFirst = 1;
+				clearCommand(svgObj);
 				//阻止右键菜单弹出
 				document.oncontextmenu = function(){return false};
 			}
 			return
 		}
 		//左键点击
-		switch(svgEl.clickFirst){
+		switch(svgObj.clickFirst){
 			//第一次点击
 			case 1:
-				var path = createSvgPath(svgEl,x,y);
-				if(!svgEl.isMove){
+				var path = createSvgPath(svgObj,x,y);
+				if(!svgObj.isMove){
 					svg.appendChild(path);
-					svgEl.newpath = path;
+					svgObj.newpath = path;
 				}
 				break;
 			//第二次点击 或者 第三次点击
 			case 2:
 			case 3:
-				if(svgEl.Q != undefined && svgEl.Q != ''){
-					svgEl.d= svgEl.M + svgEl.Q;
-					svgEl.newpath.setAttribute('d',svgEl.d);
+				if(svgObj.Q != undefined && svgObj.Q != ''){
+					svgObj.d= svgObj.M + svgObj.Q;
+					svgObj.newpath.setAttribute('d',svgObj.d);
 				}else{
-					svgEl.d = svgEl.M;
-					svgEl.newpath.setAttribute('d',svgEl.d);
-					svgEl.clickFirst = 1;
+					svgObj.d = svgObj.M;
+					svgObj.newpath.setAttribute('d',svgObj.d);
+					svgObj.clickFirst = 1;
 				}
 				break;
 			//第四次点击
 			case 4:
 				//防止第四次点击和第三次点击是双击行为
 				//即第四点的坐标与第三点一致，看做同一点，不构成三次贝塞尔曲线
-				if(svgEl.C != undefined && svgEl.C != '' ){
-					svgEl.d= svgEl.M + svgEl.C;
-					svgEl.newpath.setAttribute('d',svgEl.d);
+				if(svgObj.C != undefined && svgObj.C != '' ){
+					svgObj.d= svgObj.M + svgObj.C;
+					svgObj.newpath.setAttribute('d',svgObj.d);
 						
 					//开始处理下一条曲线
 					//清空初始量和命令集合
-					svgEl.clickFirst = 1;
-					clearCommand(svgEl);
-					path = createSvgPath(svgEl,x,y);
-					if(!svgEl.isMove){
+					svgObj.clickFirst = 1;
+					clearCommand(svgObj);
+					path = createSvgPath(svgObj,x,y);
+					if(!svgObj.isMove){
 						svg.appendChild(path);
-						svgEl.newpath = path;
+						svgObj.newpath = path;
 					}
 				}else{
-					svgEl.d= svgEl.M + svgEl.Q;
-					svgEl.newpath.setAttribute('d',svgEl.d);
-					svgEl.clickFirst = 3;
+					svgObj.d= svgObj.M + svgObj.Q;
+					svgObj.newpath.setAttribute('d',svgObj.d);
+					svgObj.clickFirst = 3;
 				}
 				break;
 		}
-		svgEl.clickFirst += 1;
+		svgObj.clickFirst += 1;
 	}
 	//绘制bezier时svgMove事件
-	function bezierMove(e,svgEl){
+	function bezierMove(e,svgObj){
 		//获取移动时坐标对象
 		var coordinatesMove = getCoordinates(e);
 		var x = coordinatesMove.x;
 		var y = coordinatesMove.y;
 		//临时的d命令集合
 		var tempD;
-		if(svgEl.clickFirst > 1){
-			switch(svgEl.clickFirst){
+		if(svgObj.clickFirst > 1){
+			switch(svgObj.clickFirst){
 				case 2:
-					svgEl.QParam2 = svgEl.QParam1 = x + ' ' + y;
-					svgEl.Q = (' Q'+ svgEl.QParam1 + ','+ svgEl.QParam2 );
-					tempD= svgEl.M + svgEl.Q;
+					svgObj.QParam2 = svgObj.QParam1 = x + ' ' + y;
+					svgObj.Q = (' Q'+ svgObj.QParam1 + ','+ svgObj.QParam2 );
+					tempD= svgObj.M + svgObj.Q;
 					break;
 				case 3:
-					svgEl.QParam2 = x + ' ' + y;
-					svgEl.Q = (' Q'+ svgEl.QParam1 + ','+ svgEl.QParam2 );
-					tempD= svgEl.M + svgEl.Q;
+					svgObj.QParam2 = x + ' ' + y;
+					svgObj.Q = (' Q'+ svgObj.QParam1 + ','+ svgObj.QParam2 );
+					tempD= svgObj.M + svgObj.Q;
 					break;
 				case 4:
-					svgEl.CParam1 = svgEl.QParam1;
-					svgEl.CParam2 = svgEl.QParam2;
-					svgEl.CParam3 = x + ' ' + y;
-					svgEl.C = (' C'+ svgEl.CParam1 + ','+ svgEl.CParam2 + ',' +  svgEl.CParam3);
-					tempD= svgEl.M + svgEl.C;
+					svgObj.CParam1 = svgObj.QParam1;
+					svgObj.CParam2 = svgObj.QParam2;
+					svgObj.CParam3 = x + ' ' + y;
+					svgObj.C = (' C'+ svgObj.CParam1 + ','+ svgObj.CParam2 + ',' +  svgObj.CParam3);
+					tempD= svgObj.M + svgObj.C;
 					break;
 			}
-			svgEl.newpath.setAttribute('d',tempD);
+			svgObj.newpath.setAttribute('d',tempD);
 		}
 	}
 	//绘制矩形
@@ -527,17 +526,17 @@ window.onload = function(){
 		});
 	}
 	//清空曲线所有命令及上一条曲线的坐标
-	function clearCommand(svgEl){
-		svgEl.d = '';
-		svgEl.M = '';
-		svgEl.Q = '';
-		svgEl.QParam1 = '';
-		svgEl.QParam2 = '';
-		svgEl.C = '';
-		svgEl.CParam1 = '';
-		svgEl.CParam2 = '';
-		svgEl.CParam3 = '';
-		svgEl.newpath = '';
+	function clearCommand(svgObj){
+		svgObj.d = '';
+		svgObj.M = '';
+		svgObj.Q = '';
+		svgObj.QParam1 = '';
+		svgObj.QParam2 = '';
+		svgObj.C = '';
+		svgObj.CParam1 = '';
+		svgObj.CParam2 = '';
+		svgObj.CParam3 = '';
+		svgObj.newpath = '';
 	}
 	//绘制曲线
 	function drawBezier(){
