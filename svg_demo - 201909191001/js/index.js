@@ -236,10 +236,7 @@ window.onload = function(){
 		});
 		
 	}
-	//ellipse元素：将点坐标添加到坐标集points中
-	function addPoint(svgObj,coordinates){
-		svgObj.points += (coordinates.x + ' ' + coordinates.y + ' ');
-	}
+	
 	//创建ellipse元素
 	function createEllipse(coordinatesObj1){
 		var props = {
@@ -315,6 +312,30 @@ window.onload = function(){
 
 
 	//polygon
+	//polygon元素：将点坐标添加到坐标集points中
+	function addPoint(svgObj,coordinates){
+		svgObj.points += (coordinates.x + ' ' + coordinates.y + ' ');
+	}
+	//绘制多边形
+	function drawPolygon(){
+		var polygonEl = {
+			//svg是否第一次点击
+			clickFirst:true,
+			//坐标集
+			points:'',
+			//判断是否移动
+			isMove:false,
+			
+		};
+		//svg点击
+		svg.addEventListener('mousedown',svgMouseDown = function(e){
+			svgDown(e,polygonEl,'polygon');
+		})
+		//svg移动
+		svg.addEventListener('mousemove',svgMouseMove = function(e){
+			svgMove(e,polygonEl,'polygon');
+		});
+	}
 	//创建polygon元素
 	function createPolygon(svgObj,coordinates){
 		//将点添加到坐标集中
@@ -406,26 +427,7 @@ window.onload = function(){
 			svgObj.newPolygon.setAttribute('points',pointsTemp);
 		}
 	}
-	//绘制多边形
-	function drawPolygon(){
-		var polygonEl = {
-			//svg是否第一次点击
-			clickFirst:true,
-			//坐标集
-			points:'',
-			//判断是否移动
-			isMove:false,
-			
-		};
-		//svg点击
-		svg.addEventListener('mousedown',svgMouseDown = function(e){
-			svgDown(e,polygonEl,'polygon');
-		})
-		//svg移动
-		svg.addEventListener('mousemove',svgMouseMove = function(e){
-			svgMove(e,polygonEl,'polygon');
-		});
-	}
+	
 
 
 
@@ -433,6 +435,37 @@ window.onload = function(){
 
 
 	//path
+	//清空曲线所有命令及上一条曲线的坐标
+	function clearCommand(svgObj){
+		svgObj.d = '';
+		svgObj.M = '';
+		svgObj.Q = '';
+		svgObj.QParam1 = '';
+		svgObj.QParam2 = '';
+		svgObj.C = '';
+		svgObj.CParam1 = '';
+		svgObj.CParam2 = '';
+		svgObj.CParam3 = '';
+		svgObj.newpath = '';
+	}
+	//绘制曲线
+	function drawBezier(){
+		var bezierEl = {
+			//svg点击次数
+			clickFirst:1,
+			//判断是否移动
+			isMove:false,
+		}
+		//svg点击
+		svg.addEventListener('mousedown',svgMouseDown = function(e){
+			svgDown(e,bezierEl,'bezier');
+		})
+		//svg移动
+		svg.addEventListener('mousemove',svgMouseMove = function(e){
+			svgMove(e,bezierEl,'bezier')
+		});
+	}
+
 	//创建svgPath元素
 	function createSvgPath(svgObj,x,y){
 		svgObj.M = 'M'+ x + ' ' + y;
@@ -556,36 +589,8 @@ window.onload = function(){
 			svgObj.newpath.setAttribute('d',tempD);
 		}
 	}
-	//清空曲线所有命令及上一条曲线的坐标
-	function clearCommand(svgObj){
-		svgObj.d = '';
-		svgObj.M = '';
-		svgObj.Q = '';
-		svgObj.QParam1 = '';
-		svgObj.QParam2 = '';
-		svgObj.C = '';
-		svgObj.CParam1 = '';
-		svgObj.CParam2 = '';
-		svgObj.CParam3 = '';
-		svgObj.newpath = '';
-	}
-	//绘制曲线
-	function drawBezier(){
-		var bezierEl = {
-			//svg点击次数
-			clickFirst:1,
-			//判断是否移动
-			isMove:false,
-		}
-		//svg点击
-		svg.addEventListener('mousedown',svgMouseDown = function(e){
-			svgDown(e,bezierEl,'bezier');
-		})
-		//svg移动
-		svg.addEventListener('mousemove',svgMouseMove = function(e){
-			svgMove(e,bezierEl,'bezier')
-		});
-	}
+	
+	
 	
 	//默认绘制矩形
 	drawRect();
