@@ -353,7 +353,34 @@
 						<textPath xlink:href="#my_path">This text follows a curve.</textPath>
 					</text>
 				</svg>
-            </div>
+			</div>
+			<div>
+				<h4>transform属性：基础变形</h4>
+
+				<svg height='500'>
+					<!-- g整合svg元素，添加统一的属性 -->
+					<g fill='red'>
+						<rect x='0' y='0' width='10' height='10' />
+						<rect x='20' y='0' width='10' height='10' />
+					</g>
+					<!-- 平移 translate -->
+					<rect x='0' y='0' width='10' height='10' transform='translate(30,40)' />
+					<!-- 旋转 rotate -->
+					<rect x='50' y='50' width='20' height='20' transform='rotate(30)' />
+					<!-- 斜切 skewX skewY -->
+					<rect x='60' y='60' width='30' height='30' transform='skewX(15) skewY(15)' />
+					<!-- 缩放 scale -->
+					<rect x='80' y='120' width='30' height='30' transform='scale(2)' fill='pink'/>
+				</svg>
+			</div>
+			<div>
+				<h4>svg嵌套</h4>
+				<svg>
+					<svg  viewBox='10 10 100 100' >
+						<rect x="0" y="0" width="50" height="50" style="fill:red;"/>
+					</svg>
+				</svg>
+			</div>
 
         </div>
 
