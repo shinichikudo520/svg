@@ -314,10 +314,45 @@
 			</div>
             <div>
                 <h4>text文本</h4>
-                <svg width='100%' height='800'>
-                    <text x="100"  y="100" fill='red'>svg-text...</text>
+                <svg width='100%' height='300'>
+					<text x="100"  y="100" fill='red'>svg-text...</text>
+					<!-- 旋转 -->
                     <text x="100"  y="150" fill='red' transform='rotate(90 125,150)'>svg-text2...</text>
-                </svg>
+					<text x="100"  y="250" fill='blue' text-anchor='inherit'>svg-text2...</text>
+					
+				</svg>
+				<h4>文本相关的元素</h4>
+				<svg width='100%' height='800'>
+					<!-- tspan该元素用来标记大块文本的子部分 -->
+					<!-- tspan标签必须是一个text或者tspan标签的子标签 -->
+					<!-- tspan的属性x y 设置自己相对于svg的绝对位置 ，值可以为一个数列-->
+					<text x="20"  y="20">
+							这是一个text文本中间
+							<tspan x='20' dy='0' font-weight='bold' fill='red'>tspan该元素用来标记大块文本的子部分.....</tspan>
+							的子文本
+						</text>
+					<!-- tspans属性dx dy设置相对于当前位置的偏移位置，值可以为一个数列- -->
+					<text x="50"  y="50">
+						这是一个text文本中间
+						<tspan dx='10' dy='10' font-weight='bold' fill='red'>tspan该元素用来标记大块文本的子部分.....</tspan>
+						的子文本
+					</text>
+					<!-- tspan属性remote使子文本旋转，值可以为一个数列，应用到每个字符上 -->
+					<text x="80"  y="80">
+						这是一个text文本中间
+						<tspan rotate='45' font-weight='bold' fill='red'>tspan该元素用来标记大块文本的子部分.....</tspan>
+						的子文本
+					</text>
+					<!-- use元素允许引用已经定义的文本，高效地把它复制到当前位置。你可以使用xlink:href属性，把它指向一个元素，取得其文本内容。你可以独立于源样式化它、修改它的外观。 -->
+					<text  x="110"  y="110" id="example">This is an example text.</text>
+					<use xlink:href="#example" x="140" y="140" />
+					<!-- textPath
+					该元素利用它的xlink:href属性取得一个任意路径，把字符对齐到路径，于是字体会环绕路径、顺着路径走： -->
+					<path id="my_path" d="M 200,500 C 240,240 280,240 300,320" fill='none' stroke='green'/>
+					<text>
+						<textPath xlink:href="#my_path">This text follows a curve.</textPath>
+					</text>
+				</svg>
             </div>
 
         </div>
