@@ -381,6 +381,44 @@
 					</svg>
 				</svg>
 			</div>
+			<div>
+				<h4>剪切 clipPath</h4>
+				<svg height='500'>
+					<defs>
+						<clipPath id="cut-off-bottom">
+							<!-- rect所覆盖的范围最终会显示 -->
+							<rect x='0' y='0' width='200' height='100' />
+						</clipPath>
+					</defs>
+					<circle cx="100" cy="100" r="100" clip-path='url(#cut-off-bottom)'/>
+				</svg>
+				<h4>遮罩 mask</h4>
+				<svg>
+					<defs>
+						<linearGradient id="Gradient">
+							<stop offset="0" stop-color="white" stop-opacity="0" />
+							<stop offset="1" stop-color="white" stop-opacity="1" />
+						</linearGradient>
+						<mask id="Mask" >
+							<rect x="0" y="0" width="200" height="200" fill='url(#Gradient)'/>
+						</mask>
+					</defs>
+					<rect x="0" y="0" width="200" height="200" fill="green" />
+					<rect x="0" y="0" width="200" height="200" fill="red" mask="url(#Mask)" />
+				</svg>
+			</div>
+			<div>
+				<h4>image嵌入图像</h4>
+				<svg>
+					<image xlink:href="https://b-ssl.duitang.com/uploads/blog/201312/04/20131204184148_hhXUT.jpeg" x="0" y="0" height="200" width="200"/>
+				</svg>
+				<h4>foreignObject嵌入xml/HTML</h4>
+				<svg width="300" height="150">
+					<foreignObject width="120" height="150">
+						<div xmlns="http://www.w3.org/1999/xhtml">这是嵌入svg的html，按照正常的html解析</div>
+					</foreignObject>
+				</svg>
+			</div>
 
         </div>
 
